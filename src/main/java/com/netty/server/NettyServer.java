@@ -1,19 +1,10 @@
 package com.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-
 import java.net.InetSocketAddress;
-import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class NettyServer {
@@ -32,8 +23,11 @@ public class NettyServer {
         bootstrap.group(boosGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .localAddress(new InetSocketAddress(PORT))/*指定服务器监听端口*/
+                .childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ServerHandler());
-        return bootstrap;
+                return bootstrap;
     }
 
 }

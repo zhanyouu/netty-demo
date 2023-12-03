@@ -1,19 +1,11 @@
 package com.netty.client;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-
 import java.net.InetSocketAddress;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class NettyClient {
     public static final String HOST = "127.0.0.1";
@@ -35,6 +27,9 @@ public class NettyClient {
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .remoteAddress(new InetSocketAddress(HOST, PORT))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
                 .handler(new ClientHandler());
         return bootstrap;
     }
