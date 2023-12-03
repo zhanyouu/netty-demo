@@ -20,8 +20,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf in = (ByteBuf) msg;
-        System.out.println("Server accept:" + in.toString(CharsetUtil.UTF_8));
+        ByteBuf byteBuf = (ByteBuf) msg;
+        System.out.println("服务端接收:" + byteBuf.toString(CharsetUtil.UTF_8));
         ctx.writeAndFlush(Unpooled.copiedBuffer("你好，我是服务端，我已经收到你发送的消息", CharsetUtil.UTF_8));
     }
 }
